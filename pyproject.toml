@@ -1,6 +1,7 @@
 [tool.poetry]
 name = "sqlalchemy-crud"
-version = "0.1.0"
+url = "https://github.com/cblack34/sqlalchemy-crud"
+version = "0.1.1"
 description = "Basic C.R.U.D for SQLAlchemy models"
 authors = ["Clayton Black"]
 
