@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "sqlalchemy-crud"
 version = "0.1.0"
-description = ""
-authors = ["Clayton Black <cblack@claytontblack.com>"]
+description = "Basic C.R.U.D for SQLAlchemy models"
+authors = ["Clayton Black"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
