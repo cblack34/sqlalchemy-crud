@@ -1,9 +1,12 @@
 [tool.poetry]
 name = "sqlalchemy-crud"
-url = "https://github.com/cblack34/sqlalchemy-crud"
+repository = "https://github.com/cblack34/sqlalchemy-crud"
 version = "0.1.1"
 description = "Basic C.R.U.D for SQLAlchemy models"
 authors = ["Clayton Black"]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/cblack34/sqlalchemy-crud/issues"
 
 [tool.poetry.dependencies]
 python = "^3.8"
