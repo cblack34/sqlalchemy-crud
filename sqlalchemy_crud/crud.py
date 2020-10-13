@@ -63,7 +63,10 @@ def update_model(db: Session, model: Base, model_id: int, schema: dict) -> Base:
         if hasattr(db_model, key):
             setattr(db_model, key, value)
         else:
-            raise AttributeError
+            raise TypeError(
+                    "%r is an invalid keyword argument for %s" % (key, type(db_model))
+                )
+
 
     db.commit()
     db.refresh(db_model)
