@@ -1,6 +1,6 @@
 import pytest
 
-from sqlalchemy_crud.tests.test_database import setup_database
+from sqlalchemy_crud.tests.test_database import setup_database  # noqa: F401
 from sqlalchemy_crud import crud
 from sqlalchemy_crud.tests import test_models
 
@@ -11,7 +11,7 @@ bad_parents = {1: {"invalid_field": "That's not what your mom said."}}
 children = {1: {"name": "Mike"}}
 
 
-def test_create_get_model(setup_database):
+def test_create_get_model(setup_database):  # noqa: F811
     db = setup_database
 
     for parent in parents:
@@ -29,14 +29,14 @@ def test_create_get_model(setup_database):
         assert parents[parent.id]["name"] == parent.name
 
 
-def test_create_raise_exception_on_invalid_attribute(setup_database):
+def test_create_raise_exception_on_invalid_attribute(setup_database):  # noqa: F811
     db = setup_database
 
     with pytest.raises(TypeError):
         crud.create_model(db, test_models.Parent, bad_parents[1])
 
 
-def test_update_model(setup_database):
+def test_update_model(setup_database):  # noqa: F811
     db = setup_database
 
     # Create parents at John
@@ -53,7 +53,7 @@ def test_update_model(setup_database):
     assert parents[2]["name"] == db_parent.name
 
 
-def test_update_raise_exception_on_invalid_attribute(setup_database):
+def test_update_raise_exception_on_invalid_attribute(setup_database):  # noqa: F811
     db = setup_database
 
     # Create parents at John
@@ -64,7 +64,7 @@ def test_update_raise_exception_on_invalid_attribute(setup_database):
         crud.update_model(db, test_models.Parent, created_parent.id, bad_parents[1])
 
 
-def test_delete_model(setup_database):
+def test_delete_model(setup_database):  # noqa: F811
     db = setup_database
 
     # Create parents at John
@@ -73,7 +73,7 @@ def test_delete_model(setup_database):
     assert crud.delete_model(db, test_models.Parent, created_parent.id) is None
 
 
-def test_delete_nonexistent_model(setup_database):
+def test_delete_nonexistent_model(setup_database):  # noqa: F811
     from sqlalchemy.orm.exc import UnmappedInstanceError
 
     db = setup_database
@@ -82,14 +82,14 @@ def test_delete_nonexistent_model(setup_database):
         crud.delete_model(db, test_models.Parent, 500)
 
 
-def test_get_nonexistent_model(setup_database):
+def test_get_nonexistent_model(setup_database):  # noqa: F811
     db = setup_database
     db_parent = crud.get_model(db, test_models.Parent, 500)
 
     assert db_parent is None
 
 
-def test_get_model_by_attribute(setup_database):
+def test_get_model_by_attribute(setup_database):  # noqa: F811
     db = setup_database
 
     # Create parents at John
@@ -102,13 +102,13 @@ def test_get_model_by_attribute(setup_database):
     assert db_parent.name == created_parent.name
 
 
-def test_get_models_by_attribute(setup_database):
+def test_get_models_by_attribute(setup_database):  # noqa: F811
     db = setup_database
 
     # Create 3 parents 2 with the same name
-    created_parent = crud.create_model(db, test_models.Parent, parents[1])
-    created_parent = crud.create_model(db, test_models.Parent, parents[1])
-    created_parent = crud.create_model(db, test_models.Parent, parents[2])
+    crud.create_model(db, test_models.Parent, parents[1])
+    crud.create_model(db, test_models.Parent, parents[1])
+    crud.create_model(db, test_models.Parent, parents[2])
 
     db_parents = crud.get_models_by_attribute(
         db, test_models.Parent, "name", parents[1]["name"]
@@ -119,7 +119,7 @@ def test_get_models_by_attribute(setup_database):
     assert db_parents[1].name == parents[1]["name"]
 
 
-def test_link_and_unlink_models(setup_database):
+def test_link_and_unlink_models(setup_database):  # noqa: F811
     db = setup_database
 
     # Create a parent and a child
