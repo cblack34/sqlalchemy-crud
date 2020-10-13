@@ -82,6 +82,13 @@ def test_delete_nonexistent_model(setup_database):
         crud.delete_model(db, test_models.Parent, 500)
 
 
+def test_get_nonexistent_model(setup_database):
+    db = setup_database
+    db_parent = crud.get_model(db, test_models.Parent, 500)
+
+    assert db_parent is None
+
+
 def test_get_model_by_attribute(setup_database):
     db = setup_database
 
