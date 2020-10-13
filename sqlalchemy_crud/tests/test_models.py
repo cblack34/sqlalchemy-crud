@@ -7,7 +7,7 @@ parents_to_children = Table(
     "parents_to_children",
     Base.metadata,
     Column("parent_id", Integer, ForeignKey("parent_1.id")),
-    Column("child_id", Integer, ForeignKey("child.id")),
+    Column("child_id", Integer, ForeignKey("children.id")),
 )
 
 
@@ -15,7 +15,7 @@ class Parent(Base):
     __tablename__ = "parent_1"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), nullable=False, unique=True)
+    name = Column(String(255), nullable=False)
     created = Column(DateTime(timezone=True), server_default=func.now())
     updated = Column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
@@ -27,10 +27,10 @@ class Parent(Base):
 
 
 class Child(Base):
-    __tablename__ = "child"
+    __tablename__ = "children"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(255), nullable=False, unique=True)
+    name = Column(String(255), nullable=False)
     created = Column(DateTime(timezone=True), server_default=func.now())
     updated = Column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
