@@ -6,6 +6,18 @@ jobs:
   lint:
 
     runs-on: ubuntu-latest
+    services:
+      mariadb:
+        image: mariadb:latest
+        env:
+          DB_HOST: mariadb
+          DB_TYPE: mysql+pymysql
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_password
+        ports:
+          - 3306:3306
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9, pypy3]
@@ -27,5 +39,11 @@ jobs:
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
-      run: |
-        poetry run pytest
+      run: poetry run pytest
+      env:
+        MYSQL_ROOT_PASSWORD: password
+        MYSQL_DATABASE: test_db
+        MYSQL_USER: test_user
+        MYSQL_PASSWORD: test_password
+        DB_HOST: mariadb
+        DB_TYPE: mysql+pymysql
