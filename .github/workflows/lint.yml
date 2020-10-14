@@ -17,6 +17,8 @@ jobs:
           MYSQL_USER: test_user
           MYSQL_PASSWORD: test_password
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
+        ports:
+          - 3306:3306
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9, pypy3]
@@ -44,5 +46,5 @@ jobs:
         MYSQL_DATABASE: test_db
         MYSQL_USER: test_user
         MYSQL_PASSWORD: test_password
-        DB_HOST: mariadb
+        DB_HOST: 127.0.0.1
         DB_TYPE: mysql+pymysql
