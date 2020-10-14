@@ -10,8 +10,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 import pytest
 
-DB_TYPE = "mysql+pymysql"
-DB_HOST = "localhost"
+DB_TYPE = os.environ["DB_TYPE"]
+DB_HOST = os.environ["DB_HOST"]
 DB_USER = os.environ["MYSQL_USER"]
 DB_PASS = os.environ["MYSQL_PASSWORD"]
 DB_NAME = os.environ["MYSQL_DATABASE"]
