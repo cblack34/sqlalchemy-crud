@@ -17,9 +17,6 @@ from sqlalchemy_crud.crud import (
 )
 from tests.models_for_test import Base, Parent, Child
 
-parents = {1: {"name": "parent_test_name_1"}, 2: {"name": "parent_test_name_2"}, 3: {"name": "parent_test_name_3"}}
-bad_parents = {1: {"invalid_field": "That's not what your mom said."}}
-children = {1: {"name": "Mike"}}
 
 class TestGetModels(unittest.TestCase):
     def setUp(self):
