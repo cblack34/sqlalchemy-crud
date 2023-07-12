@@ -18,6 +18,7 @@ class Parent(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False)
+    id_modulo = Column(Integer)
     created = Column(DateTime(timezone=True), server_default=func.now())
     updated = Column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
