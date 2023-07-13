@@ -4,7 +4,6 @@ from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
-
 parents_to_children = Table(
     "parents_to_children",
     Base.metadata,
