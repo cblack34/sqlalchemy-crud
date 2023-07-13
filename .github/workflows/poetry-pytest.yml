@@ -49,8 +49,8 @@ jobs:
       - run: poetry install --no-interaction --no-root --with=dev
         if: steps.cache-deps.outputs.cache-hit != 'true'
 
-      - name: Install project
-        run: poetry install --no-interaction
+#      - name: Install project
+#        run: poetry install --no-interaction
 
       # And finally run tests. I'm using pytest and all my pytest config is in my `pyproject.toml`
       # so this line is super-simple. But it could be as complex as you need.
