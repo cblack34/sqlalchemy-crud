@@ -1,1 +1,8 @@
-__version__ = "v0.1.0-beta"
+import tomllib
+from pathlib import Path
+
+toml_path = Path(__file__).parent / "pyproject.toml"
+with open(toml_path, "rb") as f:
+    pyprojectToml = tomllib.load(f)
+
+__version__ = pyprojectToml["tool"]["poetry"]["version"]
