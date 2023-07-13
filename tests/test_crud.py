@@ -8,8 +8,12 @@ from sqlalchemy_crud.crud import (
     get_models,
     get_model,
     get_model_by_attribute,
-    get_models_by_attribute, create_model, update_model,
-    delete_model, link_models, unlink_models,
+    get_models_by_attribute,
+    create_model,
+    update_model,
+    delete_model,
+    link_models,
+    unlink_models,
 )
 from tests.models_for_test import Base, Parent, Child
 
@@ -170,8 +174,6 @@ class TestGetModels(unittest.TestCase):
                 attribute_value="parent_test_name_1",
             )
 
-
-
     def test_get_models_by_attribute(self):
         self.create_test_data()
         self.link_children_to_parents()
@@ -296,8 +298,22 @@ class TestGetModels(unittest.TestCase):
         """
         self.create_test_data()
 
-        link_models(db=self.db, parent_model=Parent, parent_id=1, child_model=Child, child_id=1, backref="children")
-        link_models(db=self.db, parent_model=Parent, parent_id=1, child_model=Child, child_id=2, backref="children")
+        link_models(
+            db=self.db,
+            parent_model=Parent,
+            parent_id=1,
+            child_model=Child,
+            child_id=1,
+            backref="children",
+        )
+        link_models(
+            db=self.db,
+            parent_model=Parent,
+            parent_id=1,
+            child_model=Child,
+            child_id=2,
+            backref="children",
+        )
 
         parent = get_model(db=self.db, model=Parent, model_id=1)
         self.assertEqual(parent.name, "parent_test_name_1")
@@ -317,7 +333,14 @@ class TestGetModels(unittest.TestCase):
         self.create_test_data()
 
         with self.assertRaises(AttributeError):
-            link_models(db=self.db, parent_model=Parent, parent_id=1, child_model=Child, child_id=1, backref="invalid")
+            link_models(
+                db=self.db,
+                parent_model=Parent,
+                parent_id=1,
+                child_model=Child,
+                child_id=1,
+                backref="invalid",
+            )
 
     def test_link_models_raise_exception_on_invalid_parent_id(self):
         """
@@ -328,7 +351,14 @@ class TestGetModels(unittest.TestCase):
         self.create_test_data()
 
         with self.assertRaises(AttributeError):
-            link_models(db=self.db, parent_model=Parent, parent_id=1000, child_model=Child, child_id=1, backref="children")
+            link_models(
+                db=self.db,
+                parent_model=Parent,
+                parent_id=1000,
+                child_model=Child,
+                child_id=1,
+                backref="children",
+            )
 
     def test_link_models_raise_exception_on_invalid_child_id(self):
         """
@@ -338,7 +368,14 @@ class TestGetModels(unittest.TestCase):
         self.create_test_data()
 
         with self.assertRaises(AttributeError):
-            link_models(db=self.db, parent_model=Parent, parent_id=1, child_model=Child, child_id=1000, backref="children")
+            link_models(
+                db=self.db,
+                parent_model=Parent,
+                parent_id=1,
+                child_model=Child,
+                child_id=1000,
+                backref="children",
+            )
 
     def test_unlink_models(self):
         """
@@ -353,7 +390,14 @@ class TestGetModels(unittest.TestCase):
         parent = get_model(db=self.db, model=Parent, model_id=1)
         self.assertEqual(len(parent.children), 2)
 
-        unlink_models(db=self.db, parent_model=Parent, parent_id=1, child_model=Child, child_id=1, backref="children")
+        unlink_models(
+            db=self.db,
+            parent_model=Parent,
+            parent_id=1,
+            child_model=Child,
+            child_id=1,
+            backref="children",
+        )
 
         parent = get_model(db=self.db, model=Parent, model_id=1)
         self.assertEqual(len(parent.children), 1)
@@ -362,7 +406,14 @@ class TestGetModels(unittest.TestCase):
         self.create_test_data()
 
         with self.assertRaises(AttributeError):
-            unlink_models(db=self.db, parent_model=Parent, parent_id=1, child_model=Child, child_id=1, backref="invalid")
+            unlink_models(
+                db=self.db,
+                parent_model=Parent,
+                parent_id=1,
+                child_model=Child,
+                child_id=1,
+                backref="invalid",
+            )
 
     def test_unlink_models_raise_exception_on_invalid_parent_id(self):
         """
@@ -372,7 +423,14 @@ class TestGetModels(unittest.TestCase):
         self.create_test_data()
 
         with self.assertRaises(AttributeError):
-            unlink_models(db=self.db, parent_model=Parent, parent_id=1000, child_model=Child, child_id=1, backref="children")
+            unlink_models(
+                db=self.db,
+                parent_model=Parent,
+                parent_id=1000,
+                child_model=Child,
+                child_id=1,
+                backref="children",
+            )
 
     def test_unlink_models_raise_exception_on_invalid_child_id(self):
         """
@@ -382,7 +440,14 @@ class TestGetModels(unittest.TestCase):
         self.create_test_data()
 
         with self.assertRaises(AttributeError):
-            unlink_models(db=self.db, parent_model=Parent, parent_id=1, child_model=Child, child_id=1000, backref="children")
+            unlink_models(
+                db=self.db,
+                parent_model=Parent,
+                parent_id=1,
+                child_model=Child,
+                child_id=1000,
+                backref="children",
+            )
 
 
 if __name__ == "__main__":
