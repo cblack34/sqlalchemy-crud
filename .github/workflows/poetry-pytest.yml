@@ -58,7 +58,7 @@ jobs:
       # Install dependencies. `--no-root` means "install all dependencies but not the project
       # itself", which is what you want to avoid caching _your_ code. The `if` statement
       # ensures this only runs on a cache miss.
-      - run: poetry install --no-interaction --no-root
+      - run: poetry install --no-interaction --no-root --with=dev
         if: steps.cache-deps.outputs.cache-hit != 'true'
 
       # Now install _your_ project. This isn't necessary for many types of projects -- particularly
@@ -69,4 +69,10 @@ jobs:
 
       # And finally run tests. I'm using pytest and all my pytest config is in my `pyproject.toml`
       # so this line is super-simple. But it could be as complex as you need.
-      - run: poetry run pytest
+      - run: poetry run pytest --cov=sqlalchemy_crud --cov-report=xml:coverage.xml --junitxml=test-report.xml ./tests
+
+      # Upload coverage to codecov.io
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
