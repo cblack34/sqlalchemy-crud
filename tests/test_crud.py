@@ -158,6 +158,20 @@ class TestGetModels(unittest.TestCase):
         )
         self.assertEqual(model, None)
 
+    def test_get_model_by_attribute_with_invalid_attribute(self):
+        self.create_test_data()
+        self.link_children_to_parents()
+
+        with self.assertRaises(AttributeError):
+            model = get_model_by_attribute(
+                db=self.db,
+                model=Parent,
+                attribute="invalid_attribute",
+                attribute_value="parent_test_name_1",
+            )
+
+
+
     def test_get_models_by_attribute(self):
         self.create_test_data()
         self.link_children_to_parents()
@@ -188,6 +202,18 @@ class TestGetModels(unittest.TestCase):
         self.assertEqual(models[-1].name, "parent_test_name_99")
         self.assertEqual(models[0].children[0].name, "child_test_name_17")
         self.assertEqual(models[-1].children[0].name, "child_test_name_197")
+
+    def test_get_models_by_attribute_with_invalid_attribute(self):
+        self.create_test_data()
+        self.link_children_to_parents()
+
+        with self.assertRaises(AttributeError):
+            models = get_models_by_attribute(
+                db=self.db,
+                model=Parent,
+                attribute="invalid_attribute",
+                attribute_value="parent_test_name_1",
+            )
 
     def test_create_model(self):
         model = create_model(
