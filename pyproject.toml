@@ -4,6 +4,7 @@ repository = "https://github.com/cblack34/sqlalchemy-crud"
 version = "v0.1.1-beta"
 description = "Basic C.R.U.D for SQLAlchemy models"
 authors = ["Clayton Black"]
+license = "MIT"
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/cblack34/sqlalchemy-crud/issues"
