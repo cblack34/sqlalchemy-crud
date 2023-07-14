@@ -14,6 +14,7 @@ from sqlalchemy_crud.crud import (
     delete_model,
     link_models,
     unlink_models,
+    update_model_by_attribute,
 )
 from tests.models_for_test import Base, Parent, Child
 
@@ -274,6 +275,35 @@ class TestGetModels(unittest.TestCase):
                 db=self.db,
                 model=Parent,
                 model_id=1,
+                schema=dict(name="parent_test_name_1_updated", invalid=1),
+            )
+
+    def test_update_model_by_attribute(self):
+        self.create_test_data()
+        self.link_children_to_parents()
+
+        model = get_model(db=self.db, model=Parent, model_id=1)
+        self.assertEqual(model.name, "parent_test_name_1")
+
+        model = update_model_by_attribute(
+            db=self.db,
+            model=Parent,
+            lookup_attribute="name",
+            lookup_attribute_value="parent_test_name_1",
+            schema=dict(name="parent_test_name_1_updated"),
+        )
+        self.assertEqual(model.name, "parent_test_name_1_updated")
+
+        model = get_model(db=self.db, model=Parent, model_id=1)
+        self.assertEqual(model.name, "parent_test_name_1_updated")
+
+    def test_update_model_by_attribute_raise_exception_on_invalid_attribute(self):
+        with self.assertRaises(AttributeError):
+            update_model_by_attribute(
+                db=self.db,
+                model=Parent,
+                lookup_attribute="name",
+                lookup_attribute_value="parent_test_name_1",
                 schema=dict(name="parent_test_name_1_updated", invalid=1),
             )
 

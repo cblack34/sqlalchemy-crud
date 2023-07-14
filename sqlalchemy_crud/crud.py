@@ -1,5 +1,6 @@
-from typing import List
+from typing import List, Type
 
+import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 
@@ -59,6 +60,30 @@ def create_model(db: Session, model: Base, schema: dict) -> Base:
 
 def update_model(db: Session, model: Base, model_id: int, schema: dict) -> Base:
     db_model = get_model(db=db, model=model, model_id=model_id)
+    for key, value in schema.items():
+        if hasattr(db_model, key):
+            setattr(db_model, key, value)
+        else:
+            raise AttributeError
+
+    db.commit()
+    db.refresh(db_model)
+    return db_model
+
+
+def update_model_by_attribute(
+    db: Session,
+    model: Type[sqlalchemy.orm.decl_api.DeclarativeMeta],
+    lookup_attribute: str,
+    lookup_attribute_value,
+    schema: dict,
+):
+    db_model = get_model_by_attribute(
+        db=db,
+        model=model,
+        attribute=lookup_attribute,
+        attribute_value=lookup_attribute_value,
+    )
     for key, value in schema.items():
         if hasattr(db_model, key):
             setattr(db_model, key, value)
