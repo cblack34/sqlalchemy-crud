@@ -10,6 +10,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ "3.8", "3.9", "3.10", "3.11" ]
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3.5.3
@@ -19,7 +23,7 @@ jobs:
       - name: Set up Python 3.8
         uses: actions/setup-python@v3.1.4
         with:
-          python-version: 3.8
+          python-version: ${{ matrix.python-version }}
 
       # Cache the installation of Poetry itself, e.g. the next step. This prevents the workflow
       # from installing Poetry every time, which can be slow. Note the use of the Poetry version
@@ -30,7 +34,7 @@ jobs:
         uses: actions/cache@v3.3.1
         with:
           path: ~/.local
-          key: poetry-1.1.12-0
+          key: poetry-1.2.1-0-${{ matrix.python-version }}
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
@@ -49,9 +53,6 @@ jobs:
       - run: poetry install --no-interaction --no-root --with=dev
         if: steps.cache-deps.outputs.cache-hit != 'true'
 
-#      - name: Install project
-#        run: poetry install --no-interaction
-
       # And finally run tests. I'm using pytest and all my pytest config is in my `pyproject.toml`
       # so this line is super-simple. But it could be as complex as you need.
       - name: Run tests with coverage
@@ -65,5 +66,5 @@ jobs:
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v3
         with:
-          name: coverage
+          name: coverage-${{ matrix.python-version }}
           path: coverage.xml
