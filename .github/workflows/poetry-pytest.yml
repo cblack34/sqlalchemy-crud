@@ -8,12 +8,15 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  python-versions: ( "3.8" "3.9" "3.10" "3.11" )
+
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ "3.8", "3.9", "3.10", "3.11" ]
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
 
     steps:
       - name: Checkout repository
@@ -60,12 +63,56 @@ jobs:
         run: poetry run pytest --cov=sqlalchemy_crud --cov-report=xml:coverage.xml --junitxml=test-report.xml ./tests
 
       - name: Upload coverage reports to Codecov
+        if: always()
         uses: codecov/codecov-action@v3
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload coverage artifact
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: coverage-${{ matrix.python-version }}
           path: coverage.xml
+
+      - name: Upload test artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report-${{ matrix.python-version }}
+          path: test-report.xml
+
+
+  Publish-Test:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+    needs:
+      - test
+    if: always()
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.3
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3.1.4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Download test artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: test-report-${{ matrix.python-version }}
+
+      - name: Publish test artifact
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            test-report.xml
+          check_name: Unit Tests for python ${{ matrix.python-version }}
