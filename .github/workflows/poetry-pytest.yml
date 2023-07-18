@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ "3.8", "3.9", "3.10", "3.11" ]
+        python-version: ${{vars.python-versions}}
 
     steps:
       - name: Checkout repository
@@ -71,6 +71,37 @@ jobs:
           path: coverage.xml
 
       - name: Upload test artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report-${{ matrix.python-version }}
+          path: test-report.xml
+
+
+  Publish:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+      pull-requests: write
+    needs: test
+    strategy:
+      matrix:
+        python-version: ${{vars.python-versions}}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3.5.3
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v3.1.4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Download test artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: test-report-${{ matrix.python-version }}
+
+      - name: Publish test artifact
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
