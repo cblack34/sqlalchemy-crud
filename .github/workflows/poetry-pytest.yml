@@ -77,7 +77,7 @@ jobs:
           path: test-report.xml
 
 
-  Publish:
+  Publish-Test:
     runs-on: ubuntu-latest
     permissions:
       checks: write
