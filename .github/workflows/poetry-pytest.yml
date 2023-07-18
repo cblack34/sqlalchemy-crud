@@ -8,12 +8,15 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  python-versions: ( "3.8" "3.9" "3.10" "3.11" )
+
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ${{vars.python-versions}}
+        python-version: ${{ env.python-versions }}
 
     steps:
       - name: Checkout repository
@@ -85,7 +88,7 @@ jobs:
     needs: test
     strategy:
       matrix:
-        python-version: ${{vars.python-versions}}
+        python-version: ${{ env.python-versions }}
 
     steps:
       - name: Checkout repository
