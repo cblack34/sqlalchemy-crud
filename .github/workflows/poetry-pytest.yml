@@ -89,7 +89,7 @@ jobs:
       checks: write
       pull-requests: write
     needs:
-        - test:
+      - test
     if: always()
     strategy:
       matrix:
