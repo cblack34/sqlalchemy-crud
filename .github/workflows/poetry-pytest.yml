@@ -110,3 +110,4 @@ jobs:
         with:
           files: |
             test-report.xml
+          check_name: Unit Tests for python ${{ matrix.python-version }}
