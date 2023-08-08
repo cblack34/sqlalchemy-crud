@@ -24,7 +24,7 @@ jobs:
 
       # If you wanted to use multiple Python versions, you'd have specify a matrix in the job and
       # reference the matrixe python version here.
-      - name: Set up Python 3.8
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v3.1.4
         with:
           python-version: ${{ matrix.python-version }}
@@ -38,12 +38,12 @@ jobs:
         uses: actions/cache@v3.3.1
         with:
           path: ~/.local
-          key: poetry-1.2.1-0-${{ matrix.python-version }}
+          key: poetry-1.5.1-0-${{ matrix.python-version }}
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
-          version: 1.2.1
+          version: 1.5.1
           virtualenvs-create: true
           virtualenvs-in-project: true
 
