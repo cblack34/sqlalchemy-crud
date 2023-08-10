@@ -9,13 +9,13 @@ def get_models(
     model: Type[sqlalchemy.orm.decl_api.DeclarativeMeta],
     offset: int = 0,
     limit: int = 100,
-) -> list[DeclarativeMeta]:
+) -> List[DeclarativeMeta]:
     return db.query(model).offset(offset).limit(limit).all()
 
 
 def get_model(
     db: Session, model: Type[sqlalchemy.orm.decl_api.DeclarativeMeta], model_id: int
-) -> Type[sqlalchemy.orm.decl_api.DeclarativeMeta]:
+) -> Union[DeclarativeMeta, None]:
     return get_model_by_attribute(
         db=db, model=model, attribute="id", attribute_value=model_id
     )
@@ -41,7 +41,7 @@ def get_models_by_attribute(
     attribute_value,
     offset: int = 0,
     limit: int = 100,
-) -> list[DeclarativeMeta]:
+) -> List[DeclarativeMeta]:
     if hasattr(model, attribute):
         model_attribute = getattr(model, attribute)
         return (
@@ -70,7 +70,7 @@ def update_model(
     model: Type[sqlalchemy.orm.decl_api.DeclarativeMeta],
     model_id: int,
     schema: dict,
-) -> Type[DeclarativeMeta]:
+) -> Union[DeclarativeMeta, None]:
     db_model = get_model(db=db, model=model, model_id=model_id)
     for key, value in schema.items():
         if hasattr(db_model, key):
@@ -122,7 +122,7 @@ def link_models(
     child_model: Type[sqlalchemy.orm.decl_api.DeclarativeMeta],
     child_id: int,
     backref: str,
-) -> Type[DeclarativeMeta]:
+) -> Union[DeclarativeMeta, None]:
     parent = get_model(db=db, model=parent_model, model_id=parent_id)
     child = get_model(db=db, model=child_model, model_id=child_id)
 
@@ -142,7 +142,7 @@ def unlink_models(
     child_model: Type[sqlalchemy.orm.decl_api.DeclarativeMeta],
     child_id: int,
     backref: str,
-) -> Type[DeclarativeMeta]:
+) -> Union[DeclarativeMeta, None]:
     parent = get_model(db=db, model=parent_model, model_id=parent_id)
     child = get_model(db=db, model=child_model, model_id=child_id)
 
