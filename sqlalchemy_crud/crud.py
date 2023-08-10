@@ -1,4 +1,4 @@
-from typing import List, Type
+from typing import List, Type, Union
 
 import sqlalchemy
 from sqlalchemy.orm import Session, DeclarativeMeta
@@ -26,7 +26,7 @@ def get_model_by_attribute(
     model: Type[sqlalchemy.orm.decl_api.DeclarativeMeta],
     attribute: str,
     attribute_value,
-) -> DeclarativeMeta | None:
+) -> Union[DeclarativeMeta, None]:
     if hasattr(model, attribute):
         model_attribute = getattr(model, attribute)
         return db.query(model).filter(model_attribute == attribute_value).first()
@@ -89,7 +89,7 @@ def update_model_by_attribute(
     lookup_attribute: str,
     lookup_attribute_value,
     schema: dict,
-) -> DeclarativeMeta | None:
+) -> Union[DeclarativeMeta, None]:
     db_model = get_model_by_attribute(
         db=db,
         model=model,
